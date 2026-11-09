@@ -1,0 +1,211 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Food Trail Park | ITC Lab Project</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <link rel="stylesheet" href="style.css">
+  <style>
+    .form-section {
+      background: #fff;
+      padding: 20px;
+      border-radius: 12px;
+      margin-top: 20px;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.06);
+    }
+    .form-section h3 {
+      margin-bottom: 14px;
+      font-size: 1.1rem;
+      color: #333;
+    }
+    .form-row {
+      display: grid;
+      gap: 12px;
+      margin-bottom: 12px;
+    }
+    .form-row input, .form-row select, .form-row textarea {
+      width: 100%;
+      padding: 12px;
+      border: 1px solid #ddd;
+      border-radius: 8px;
+      font-size: 1rem;
+    }
+    .form-btn {
+      width: 100%;
+      padding: 14px;
+      background: #ff6a00;
+      color: #fff;
+      border: none;
+      border-radius: 8px;
+      font-weight: 600;
+      font-size: 1rem;
+      cursor: pointer;
+    }
+    .form-btn:active { background: #e55f00; }
+
+    @media (max-width: 768px) {
+      .navbar {
+        flex-direction: column;
+        align-items: flex-start;
+        padding: 12px 16px;
+        gap: 10px;
+      }
+      .nav-links {
+        width: 100%;
+        display: flex;
+        justify-content: space-around;
+      }
+      .nav-btn { font-size: 0.85rem; padding: 8px; }
+      .search-bar { width: 100%; }
+      .hero-banner h1 { font-size: 1.6rem; }
+      .features-grid { grid-template-columns: 1fr; }
+      .filter-buttons { 
+        display: flex; 
+        overflow-x: auto; 
+        gap: 8px;
+        padding-bottom: 8px;
+      }
+      .filter-btn { flex-shrink: 0; }
+      .food-grid { grid-template-columns: 1fr; }
+      .modal-card { width: 95%; margin: 20px; }
+    }
+  </style>
+</head>
+<body>
+  <header class="navbar">
+    <div class="logo"> 
+      <i class="fa-solid fa-utensils"></i>
+      <h2>Food Trail Park Manila</h2>
+    </div>
+    <nav class="nav-links">
+      <button class="nav-btn active" onclick="switchTab('home', this)"><i class="fa-solid fa-house"></i> Home</button>
+      <button class="nav-btn" onclick="switchTab('food', this)"><i class="fa-solid fa-burger"></i> Food</button>
+      <button class="nav-btn" onclick="switchTab('about', this)"><i class="fa-solid fa-circle-info"></i> About</button>
+    </nav>
+    <div class="search-bar" id="searchBarContainer">
+      <i class="fa-solid fa-magnifying-glass"></i>
+      <input type="text" id="searchInput" placeholder="Search spot or dish...">
+    </div>
+  </header>
+
+  <main class="main-container">
+    <section id="homeSection" class="tab-content active">
+      <div class="hero-banner">
+        <h1>Welcome to Food Trail Park</h1>
+        <p>Your ultimate guide to discovering popular food parks, street food strips, and local culinary hubs across Metro Manila.</p>
+        <button class="cta-button" onclick="goToFoodTab()">Explore Food Parks <i class="fa-solid fa-arrow-right"></i></button>
+      </div>
+
+      <div class="features-grid">
+        <div class="feature-card">
+          <i class="fa-solid fa-location-dot"></i>
+          <h3>Local Spots</h3>
+          <p>Find street food destinations across key districts like Sampaloc, Quiapo, Binondo, and more.</p>
+        </div>
+        <div class="feature-card">
+          <i class="fa-solid fa-clock"></i>
+          <h3>Schedules & Details</h3>
+          <p>Check operating hours, top menu picks, ratings, and exact spot locations before you go.</p>
+        </div>
+        <div class="feature-card">
+          <i class="fa-solid fa-diamond-turn-right"></i>
+          <h3>Easy Navigation</h3>
+          <p>Open exact location coordinates directly on Google Maps with one click.</p>
+        </div>
+      </div>
+    </section>
+
+    <section id="foodSection" class="tab-content">
+      <div class="welcome-box">
+        <h1>Food Parks in Manila</h1>
+        <p>Filter by district or use the search bar to find your next meal spot.</p>
+      </div>
+
+      <div class="filter-buttons">
+        <button class="filter-btn active" onclick="filterByDistrict('all', this)">All</button>
+        <button class="filter-btn" onclick="filterByDistrict('sampaloc', this)">Sampaloc / UST</button>
+        <button class="filter-btn" onclick="filterByDistrict('quiapo', this)">Quiapo</button>
+        <button class="filter-btn" onclick="filterByDistrict('binondo', this)">Binondo</button>
+        <button class="filter-btn" onclick="filterByDistrict('makati', this)">Makati</button>
+        <button class="filter-btn" onclick="filterByDistrict('pasig', this)">Pasig</button>
+      </div>
+
+      <div class="food-grid" id="foodGrid"> </div>
+    </section>
+
+    <section id="aboutSection" class="tab-content">
+      <div class="about-card">
+        <h2>About Food Trail Park</h2>
+        <p>Food Trail Park is a front-end web application designed to help students, locals, and food lovers discover top food parks and street food strips in Metro Manila.</p>
+        <hr class="divider">
+
+        <div class="form-section">
+          <h3><i class="fa-solid fa-music"></i> Chill Lofi Beats</h3>
+          <audio controls style="width: 100%;">
+            <source src="lofi.mp3" type="audio/mpeg">
+            Your browser does not support the audio element.
+          </audio>
+        </div>
+
+        <div class="form-section">
+          <h3><i class="fa-solid fa-video"></i> Food Trail Video Showcase</h3>
+          <video controls style="width: 100%; border-radius: 8px;">
+            <source src="food.mp4" type="video/mp4">
+            Your browser does not support the video tag.
+          </video>
+        </div>
+
+        <div class="form-section">
+          <h3><i class="fa-solid fa-paper-plane"></i> Suggest a Food Spot</h3>
+          <form id="suggestForm">
+            <div class="form-row">
+              <input type="text" name="spotName" placeholder="Food Spot Name" required>
+            </div>
+            <div class="form-row">
+              <select name="district" required>
+                <option value="">Select District</option>
+                <option value="sampaloc">Sampaloc / UST</option>
+                <option value="quiapo">Quiapo</option>
+                <option value="binondo">Binondo</option>
+                <option value="makati">Makati</option>
+                <option value="pasig">Pasig</option>
+              </select>
+            </div>
+            <div class="form-row">
+              <textarea name="message" rows="3" placeholder="What is good to eat here?"></textarea>
+            </div>
+            <button type="submit" class="form-btn">Submit Suggestion</button>
+          </form>
+        </div>
+
+      </div>
+    </section>
+  </main>
+
+  <div class="modal-bg" id="modalBg">
+    <div class="modal-card">
+      <button class="close-btn" onclick="closeModal()">&times;</button>
+      <div class="modal-img" id="modalImg"></div>
+      <div class="modal-content">
+        <span class="district-badge" id="modalDistrict">District</span>
+        <h2 id="modalTitle">Spot Name</h2>
+        <p id="modalDesc">Description goes here.</p>
+        <div class="details-box">
+          <p><i class="fa-solid fa-clock"></i> <strong>Hours:</strong> <span id="modalHours">--</span></p>
+          <p><i class="fa-solid fa-location-dot"></i> <strong>Address:</strong> <span id="modalAddress">--</span></p>
+        </div>
+        <div class="tags-section">
+          <strong>Popular Food Items:</strong>
+          <div id="modalTags" class="tags-container"></div>
+        </div>
+        <a id="navBtn" href="#" target="_blank" class="nav-button">
+          <i class="fa-solid fa-diamond-turn-right"></i> Open in Google Maps
+        </a>
+      </div>
+    </div>
+  </div>
+
+  <script src="script.js"></script>
+</body>
+</html>
